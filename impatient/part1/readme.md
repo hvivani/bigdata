@@ -1,5 +1,9 @@
 Steps to run cascading impatient part 1 - Maven Build - On EMR cluster
 
+Source Reference:
+http://docs.cascading.org/impatient/impatient1.html
+
+
 1) On a EMR Cluster, install Maven at the master node.
 http://hvivani.com.ar/2014/12/16/instalando-maven-en-instancia-amazon-ec2/
 
