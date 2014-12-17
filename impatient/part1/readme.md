@@ -19,4 +19,4 @@ https://raw.githubusercontent.com/hvivani/bigdata/master/impatient/part1/job.xml
 mvn clean && mvn assembly:assembly
 
 7) Run cascading impatient part 1 application:
-hadoop jar ~/impatient/target/impatient-1.0-SNAPSHOT-job.jar s3://your-bucket/input/rain.txt s3://your-bucket/output/impatient/
+hadoop jar ~/impatient/target/impatient-1.0-SNAPSHOT-job.jar s3://your-bucket/input/rain.txt s3://your-bucket/output/impatient/part1/
