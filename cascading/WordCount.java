@@ -52,3 +52,4 @@ public class WordCount {
         //Finally, execute the flow.
         parsedLogFlow.complete();
     }
+}
