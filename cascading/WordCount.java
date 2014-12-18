@@ -1,4 +1,4 @@
-//http://hortonworks.com/blog/logparsing-with-cascading/
+//Source: http://hortonworks.com/blog/logparsing-with-cascading/
 
 import cascading.flow.Flow;
 import cascading.flow.FlowDef;
@@ -18,7 +18,7 @@ import cascading.tap.hadoop.Hfs;
 import cascading.tuple.Fields;
 import java.util.Properties;
  
-public class Main {
+public class WordCount {
     public static void main(String[] args) {
  
     	// input (taps) and output (sinks)
