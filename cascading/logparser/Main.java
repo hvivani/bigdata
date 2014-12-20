@@ -18,7 +18,7 @@ import cascading.tuple.Fields;
 /**
  *
  */
-public class LogParser
+public class Main
   {
   public static void main( String[] args )
     {
@@ -57,7 +57,7 @@ public class LogParser
 
     // set the current job jar
     Properties properties = new Properties();
-    AppProps.setApplicationJarClass( properties, LogParser.class );
+    AppProps.setApplicationJarClass( properties, Main.class );
 
     // connect the assembly to the SOURCE and SINK taps
     Flow parsedLogFlow = new HadoopFlowConnector( properties ).connect( logTap, remoteLogTap, importPipe );
