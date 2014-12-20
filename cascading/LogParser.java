@@ -57,7 +57,7 @@ public class LogParser
 
     // set the current job jar
     Properties properties = new Properties();
-    AppProps.setApplicationJarClass( properties, Main.class );
+    AppProps.setApplicationJarClass( properties, LogParser.class );
 
     // connect the assembly to the SOURCE and SINK taps
     Flow parsedLogFlow = new HadoopFlowConnector( properties ).connect( logTap, remoteLogTap, importPipe );
