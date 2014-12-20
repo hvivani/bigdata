@@ -27,7 +27,7 @@ import cascading.tuple.Fields;
 /**
  *
  */
-public class LogAnalysis
+public class Main
   {
   public static void main( String[] args )
     {
