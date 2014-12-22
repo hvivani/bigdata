@@ -33,7 +33,7 @@ public class Main {
         // sources and sinks
         Tap inTap 	= new Hfs(new TextLine(), inputPath); //input
         Tap outTap  = new Hfs(new TextDelimited(true, ";"), outputPath, SinkMode.REPLACE); //output
-        Tap top10Tap = new Hfs( new TextDelimited(true, ";"), outputPath, SinkMode.REPLACE);
+        Tap top10Tap = new Hfs( new TextDelimited(true, ";"), sortedTopTen, SinkMode.REPLACE);
         
         // Parse the line of input and break them into five fields
         RegexParser parser = new RegexParser(new Fields("ip", "time", "request", "response", "size"), 
