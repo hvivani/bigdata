@@ -36,13 +36,15 @@ public class Main {
         RegexParser parser = new RegexParser(new Fields("ip", "time", "request", "response", "size"), 
         		"^([^ ]*) \\S+ \\S+ \\[([\\w:/]+\\s[+\\-]\\d{4})\\] \"(.+?)\" (\\d{3}) ([^ ]*).*$", new int[]{1, 2, 3, 4, 5});
         
-        // This pipe will process each line
+        // "Each" pipe applies a Function or Filter Operation to each Tuple that passes through it.
         Pipe processPipe = new Each("processPipe", new Fields("line"), parser, Fields.RESULTS);
         
-        // Grouping by 'ip' field
+        // Grouping by 'ip' field: 
+        // "GroupBy" manages one input Tuple stream and, groups the stream on selected fields in the tuple stream. 
         processPipe = new GroupBy(processPipe, new Fields("ip"));
         
-        // Aggregate each "ip" group using Count function
+        // Aggregate each "ip" group using Count function:
+        // "Every" pipe applies an Aggregator (like count, or sum) or Buffer (a sliding window) Operation to every group of Tuples that pass through it.
         processPipe = new Every(processPipe, Fields.GROUP, new Count(new Fields("IPcount")), Fields.ALL);
         
         // After aggregation counter for each "ip," sort the counts
