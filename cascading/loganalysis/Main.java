@@ -1,3 +1,6 @@
+// This program aggregates by IP hits on apache access logs. 
+// It can get the top ten of IP's
+//
 
 package com.amazonaws.vivanih.hadoop.cascading;
 
