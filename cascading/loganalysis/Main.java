@@ -47,7 +47,7 @@ public class Main {
         // "Every" pipe applies an Aggregator (like count, or sum) or Buffer (a sliding window) Operation to every group of Tuples that pass through it.
         processPipe = new Every(processPipe, Fields.GROUP, new Count(new Fields("IPcount")), Fields.ALL);
         
-        // After aggregation counter for each "ip," sort the counts
+        // After aggregation counter for each "ip," sort the counts. "true" is descending order
         //Pipe sortedCountByIpPipe = new GroupBy(processPipe, new Fields("IPcount"), true);
         
         // Limit them to the first 10, in the descending order
@@ -56,8 +56,8 @@ public class Main {
         // Join the pipe together in the flow, creating inputs and outputs (taps)
         FlowDef flowDef = FlowDef.flowDef()
     		   .addSource(processPipe, inTap)
-    		   //.addTailSink(sortedCountByIpPipe, outTap)
-    		   .addTailSink(processPipe, outTap)
+    		   //.addTailSink(sortedCountByIpPipe, outTap) //uncomment to use sorted top 10
+    		   .addTailSink(processPipe, outTap) // comment to use sorted top 10
     		   .setName("DataProcessing");
         Properties properties = AppProps.appProps()
         		.setName("DataProcessing")
