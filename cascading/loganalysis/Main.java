@@ -42,7 +42,7 @@ public class Main {
         // Grouping by 'ip' field
         processPipe = new GroupBy(processPipe, new Fields("ip"));
         
-        // Aggregate each "ip" group using the Cascading built in Count function
+        // Aggregate each "ip" group using Count function
         processPipe = new Every(processPipe, Fields.GROUP, new Count(new Fields("IPcount")), Fields.ALL);
         
         // After aggregation counter for each "ip," sort the counts
