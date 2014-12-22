@@ -12,4 +12,4 @@ Steps to run the httpd log parser with maven - on EMR cluster
 
 6) Create the JARs: mvn clean && mvn assembly:assembly
 
-7) Run cascading logparser application: hadoop jar ~/loganalysis/target/impatient-1.0-SNAPSHOT-job.jar s3://your-bucket/input/httpdlogs/ s3://your-bucket/output/logparser/201412201216/
+7) Run cascading logparser application: hadoop jar ~/loganalysis/target/impatient-1.0-SNAPSHOT-job.jar s3://vivanih-emr/input/httpdlogs/ s3://your-bucket/output/logparser/201412201216/
