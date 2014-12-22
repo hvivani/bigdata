@@ -27,10 +27,13 @@ public class Main {
  
         String inputPath 		= args[0]; //input will use default filesystem. HDFS or S3.
         String outputPath 	= args[1]; 
+        String sortedTopTen = args[ 1 ] + "/top10/";
+        
         
         // sources and sinks
         Tap inTap 	= new Hfs(new TextLine(), inputPath); //input
         Tap outTap  = new Hfs(new TextDelimited(true, ";"), outputPath, SinkMode.REPLACE); //output
+        Tap top10Tap = new Hfs( new TextDelimited(true, ";"), outputPath, SinkMode.REPLACE);
         
         // Parse the line of input and break them into five fields
         RegexParser parser = new RegexParser(new Fields("ip", "time", "request", "response", "size"), 
@@ -48,16 +51,16 @@ public class Main {
         processPipe = new Every(processPipe, Fields.GROUP, new Count(new Fields("IPcount")), Fields.ALL);
         
         // After aggregation counter for each "ip," sort the counts. "true" is descending order
-        //Pipe sortedCountByIpPipe = new GroupBy(processPipe, new Fields("IPcount"), true);
+        Pipe sortedCountByIpPipe = new GroupBy(processPipe, new Fields("IPcount"), true);
         
         // Limit them to the first 10, in the descending order
-        //sortedCountByIpPipe = new Each(sortedCountByIpPipe, new Fields("IPcount"), new Limit(10));
+        sortedCountByIpPipe = new Each(sortedCountByIpPipe, new Fields("IPcount"), new Limit(10));
         
         // Join the pipe together in the flow, creating inputs and outputs (taps)
         FlowDef flowDef = FlowDef.flowDef()
     		   .addSource(processPipe, inTap)
-    		   //.addTailSink(sortedCountByIpPipe, outTap) //uncomment to use sorted top 10
     		   .addTailSink(processPipe, outTap) // comment to use sorted top 10
+    		   .addTailSink(sortedCountByIpPipe, top10Tap) //uncomment to use sorted top 10
     		   .setName("DataProcessing");
         Properties properties = AppProps.appProps()
         		.setName("DataProcessing")
