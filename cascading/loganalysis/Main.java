@@ -1,3 +1,5 @@
+package com.amazonaws.vivanih.hadoop.cascading;
+
 import cascading.flow.Flow;
 import cascading.flow.FlowDef;
 import cascading.flow.hadoop.HadoopFlowConnector;
