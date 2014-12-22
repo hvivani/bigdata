@@ -43,15 +43,16 @@ public class Main {
         processPipe = new Every(processPipe, Fields.GROUP, new Count(new Fields("IPcount")), Fields.ALL);
         
         // After aggregation counter for each "ip," sort the counts
-        Pipe sortedCountByIpPipe = new GroupBy(processPipe, new Fields("IPcount"), true);
+        //Pipe sortedCountByIpPipe = new GroupBy(processPipe, new Fields("IPcount"), true);
         
         // Limit them to the first 10, in the descending order
-        sortedCountByIpPipe = new Each(sortedCountByIpPipe, new Fields("IPcount"), new Limit(10));
+        //sortedCountByIpPipe = new Each(sortedCountByIpPipe, new Fields("IPcount"), new Limit(10));
         
         // Join the pipe together in the flow, creating inputs and outputs (taps)
         FlowDef flowDef = FlowDef.flowDef()
     		   .addSource(processPipe, inTap)
-    		   .addTailSink(sortedCountByIpPipe, outTap)
+    		   //.addTailSink(sortedCountByIpPipe, outTap)
+    		   .addTailSink(processPipe, outTap)
     		   .setName("DataProcessing");
         Properties properties = AppProps.appProps()
         		.setName("DataProcessing")
