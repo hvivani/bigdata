@@ -40,31 +40,31 @@ public class Main {
         		"^([^ ]*) \\S+ \\S+ \\[([\\w:/]+\\s[+\\-]\\d{4})\\] \"(.+?)\" (\\d{3}) ([^ ]*).*$", new int[]{1, 2, 3, 4, 5});
         
         // "Each" pipe applies a Function or Filter Operation to each Tuple that passes through it.
-        Pipe processPipe = new Each("processPipe", new Fields("line"), parser, Fields.RESULTS);
+        Pipe top10Pipe = new Each("top10Pipe", new Fields("line"), parser, Fields.RESULTS);
         
         // Grouping by 'ip' field: 
         // "GroupBy" manages one input Tuple stream and, groups the stream on selected fields in the tuple stream. 
-        processPipe = new GroupBy(processPipe, new Fields("ip"));
+        top10Pipe = new GroupBy(top10Pipe, new Fields("ip"));
         
         // Aggregate each "ip" group using Count function:
         // "Every" pipe applies an Aggregator (like count, or sum) or Buffer (a sliding window) Operation to every group of Tuples that pass through it.
-        processPipe = new Every(processPipe, Fields.GROUP, new Count(new Fields("IPcount")), Fields.ALL);
+        top10Pipe = new Every(top10Pipe, Fields.GROUP, new Count(new Fields("IPcount")), Fields.ALL);
         
         // After aggregation counter for each "ip," sort the counts. "true" is descending order
-        Pipe sortedCountByIpPipe = new GroupBy(processPipe, new Fields("IPcount"), true);
+        Pipe top10CountPipe = new GroupBy(top10Pipe, new Fields("IPcount"), true);
         
         // Limit them to the first 10, in the descending order
-        sortedCountByIpPipe = new Each(sortedCountByIpPipe, new Fields("IPcount"), new Limit(10));
+        top10CountPipe = new Each(top10CountPipe, new Fields("IPcount"), new Limit(10));
         
         // Join the pipe together in the flow, creating inputs and outputs (taps)
         FlowDef flowDef = FlowDef.flowDef()
     		   .addSource(processPipe, inTap)
-    		   //.addTailSink(processPipe, outTap) // comment to use sorted top 10
-    		   //.addTailSink(sortedCountByIpPipe, top10Tap) //uncomment to use sorted top 10
-    		   .addTailSink(sortedCountByIpPipe, outTap) //uncomment to use sorted top 10
-    		   .setName("DataProcessing");
+    		   //.addTailSink(top10Pipe, outTap) // comment to use sorted top 10
+    		   //.addTailSink(top10CountPipe, top10Tap) //uncomment to use sorted top 10
+    		   .addTailSink(top10CountPipe, outTap) //uncomment to use sorted top 10
+    		   .setName("Top10IP");
         Properties properties = AppProps.appProps()
-        		.setName("DataProcessing")
+        		.setName("Top10IP")
         		.buildProperties();
         Flow parsedLogFlow = new HadoopFlowConnector(properties).connect(flowDef);
         
