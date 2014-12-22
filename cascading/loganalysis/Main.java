@@ -19,22 +19,21 @@ import java.util.Properties;
 public class Main {
     public static void main(String[] args) {
  
-    	// input (taps) and output (sinks)
-        String inputPath 		= args[0];
-        String outputPath 	= args[1];
+        String inputPath 		= args[0]; 
+        String outputPath 	= args[1]; 
         
         // sources and sinks
-        Tap inTap 	= new Hfs(new TextLine(), inputPath);
-        Tap outTap  = new Hfs(new TextDelimited(true, ";"), outputPath, SinkMode.REPLACE);
+        Tap inTap 	= new Hfs(new TextLine(), inputPath); //input
+        Tap outTap  = new Hfs(new TextDelimited(true, ";"), outputPath, SinkMode.REPLACE); //output
         
         // Parse the line of input and break them into five fields
         RegexParser parser = new RegexParser(new Fields("ip", "time", "request", "response", "size"), 
         		"^([^ ]*) \\S+ \\S+ \\[([\\w:/]+\\s[+\\-]\\d{4})\\] \"(.+?)\" (\\d{3}) ([^ ]*).*$", new int[]{1, 2, 3, 4, 5});
         
-        // Create a pipe for processing each line at a time
+        // This pipe will process each line
         Pipe processPipe = new Each("processPipe", new Fields("line"), parser, Fields.RESULTS);
         
-        // Group the stream within the pipe by the field "ip"
+        // Grouping by 'ip' field
         processPipe = new GroupBy(processPipe, new Fields("ip"));
         
         // Aggregate each "ip" group using the Cascading built in Count function
