@@ -58,7 +58,7 @@ public class Main {
         
         // Join the pipe together in the flow, creating inputs and outputs (taps)
         FlowDef flowDef = FlowDef.flowDef()
-    		   .addSource(processPipe, inTap)
+    		   .addSource(top10Pipe, inTap)
     		   //.addTailSink(top10Pipe, outTap) // comment to use sorted top 10
     		   //.addTailSink(top10CountPipe, top10Tap) //uncomment to use sorted top 10
     		   .addTailSink(top10CountPipe, outTap) //uncomment to use sorted top 10
