@@ -25,11 +25,11 @@ public class Main
     String inputPath = args[ 0 ];
     String outputPath = args[ 1 ];
 
-    // define what the input file looks like, "offset" is bytes from beginning
+    // define input files. "offset" is how many bytes from start
     TextLine scheme = new TextLine( new Fields( "offset", "line" ) );
 
-    // create SOURCE tap to read a resource from the local file system, if input is not an URL
-    Tap logTap = inputPath.matches( "^[^:]+://.*" ) ? new Hfs( scheme, inputPath ) : new Lfs( scheme, inputPath );
+    // create SOURCE tap to read a resource from defaul file system
+    Tap logTap = new Hfs( scheme, inputPath );
 
     // create an assembly to parse an Apache log file and store on an HDFS cluster
 
