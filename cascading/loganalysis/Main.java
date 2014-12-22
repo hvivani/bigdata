@@ -25,7 +25,7 @@ import java.util.Properties;
 public class Main {
     public static void main(String[] args) {
  
-        String inputPath 		= args[0]; 
+        String inputPath 		= args[0]; //input will use default filesystem. HDFS or S3.
         String outputPath 	= args[1]; 
         
         // sources and sinks
