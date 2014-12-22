@@ -27,7 +27,7 @@ public class Main {
  
         String inputPath 		= args[0]; //input will use default filesystem. HDFS or S3.
         String outputPath 	= args[1]; 
-        String sortedTopTen = args[ 1 ] + "/top10/";
+       // String sortedTopTen = args[ 1 ] + "/top10/";
         
         
         // sources and sinks
@@ -59,8 +59,9 @@ public class Main {
         // Join the pipe together in the flow, creating inputs and outputs (taps)
         FlowDef flowDef = FlowDef.flowDef()
     		   .addSource(processPipe, inTap)
-    		   .addTailSink(processPipe, outTap) // comment to use sorted top 10
-    		   .addTailSink(sortedCountByIpPipe, top10Tap) //uncomment to use sorted top 10
+    		   //.addTailSink(processPipe, outTap) // comment to use sorted top 10
+    		   //.addTailSink(sortedCountByIpPipe, top10Tap) //uncomment to use sorted top 10
+    		   .addTailSink(sortedCountByIpPipe, outTap) //uncomment to use sorted top 10
     		   .setName("DataProcessing");
         Properties properties = AppProps.appProps()
         		.setName("DataProcessing")
