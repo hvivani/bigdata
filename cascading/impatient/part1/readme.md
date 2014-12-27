@@ -17,7 +17,7 @@ https://raw.githubusercontent.com/hvivani/bigdata/master/cascading/impatient/par
 https://raw.githubusercontent.com/hvivani/bigdata/master/cascading/impatient/part1/Main.java
 
 5) Create the file ~/impatient/src/assembly/job.xml with this content:
-https://raw.githubusercontent.com/hvivani/bigdata/master/cascacind/impatient/part1/job.xml
+https://raw.githubusercontent.com/hvivani/bigdata/master/cascading/impatient/part1/job.xml
 
 6) Create the JARs:
 mvn clean && mvn assembly:assembly
