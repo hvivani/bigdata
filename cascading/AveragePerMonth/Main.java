@@ -13,6 +13,7 @@ import cascading.pipe.Every;
 import cascading.pipe.GroupBy;
 import cascading.pipe.Pipe;
 import cascading.property.AppProps;
+import cascading.scheme.Scheme;
 import cascading.scheme.hadoop.TextDelimited;
 import cascading.tap.Tap;
 import cascading.tap.hadoop.Hfs;
@@ -32,13 +33,15 @@ public class
     AppProps.setApplicationJarClass( properties, Main.class );
     FlowConnector flowConnector = new HadoopFlowConnector( properties );
 
-    // create source and sink taps
-    Tap inTap = new Hfs( new TextDelimited( false, "|" ), inPath );
-    Tap outTap = new Hfs( new TextDelimited( false, "|" ), outPath );
+    //scheme definition:
+    Scheme inScheme = new TextDelimited( new Fields("LoadId", "MRP", "ServicerName", "CIR", "UPB", "LoanAge", "RMLM" , "ARMM", "MadurityDate", "MSA", "CLDS", "ModificationFlag", "ZBC", "ZBED", "RepurchaseIndicator"), "|");
+    Scheme outScheme = new TextDelimited( new Fields( "MRP", "UPB" ) );
 
-    //define the fields:
-    Fields recordFields = new Fields( "LoadId", "MRP", "ServicerName", "CIR", "UPB", "LoanAge", "RMLM" , "ARMM", "MadurityDate", "MSA", "CLDS", "ModificationFlag", "ZBC", "ZBED", "RepurchaseIndicator");
-    
+    // create source and sink taps
+    Tap inTap = new Hfs( inScheme, inPath );
+    Tap outTap = new Hfs( outScheme, outPath );
+
+
     // specify a pipe to connect the taps
     Pipe copyPipe = new Pipe( "copy" );
     // connect the taps, pipes, etc., into a flow
