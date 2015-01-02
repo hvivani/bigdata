@@ -25,38 +25,25 @@ public class
   public static void
   main( String[] args )
     {
-    String docPath = args[ 0 ];
-    String wcPath = args[ 1 ];
+    String inPath = args[ 0 ];
+    String outPath = args[ 1 ];
 
     Properties properties = new Properties();
     AppProps.setApplicationJarClass( properties, Main.class );
     FlowConnector flowConnector = new HadoopFlowConnector( properties );
 
     // create source and sink taps
-    Tap docTap = new Hfs( new TextDelimited( true, "|" ), docPath );
-    Tap wcTap = new Hfs( new TextDelimited( true, "|" ), wcPath );
+    Tap inTap = new Hfs( new TextDelimited( true, "|" ), inPath );
+    Tap outTap = new Hfs( new TextDelimited( true, "|" ), outPath );
 
-    // specify a regex operation to split the "document" text lines into a token stream
-    Fields token = new Fields( "token" );
-    Fields text = new Fields( "text" );
-    RegexSplitGenerator splitter = new RegexSplitGenerator( token, "[ \\[\\]\\(\\),.]" );
-    // only returns "token"
-    Pipe docPipe = new Each( "token", text, splitter, Fields.RESULTS );
-
-    // determine the word counts
-    Pipe wcPipe = new Pipe( "wc", docPipe );
-    wcPipe = new GroupBy( wcPipe, token );
-    wcPipe = new Every( wcPipe, Fields.ALL, new Count(), Fields.ALL );
-
+    
+    // specify a pipe to connect the taps
+    Pipe copyPipe = new Pipe( "copy" );
     // connect the taps, pipes, etc., into a flow
     FlowDef flowDef = FlowDef.flowDef()
-     .setName( "wc" )
-     .addSource( docPipe, docTap )
-     .addTailSink( wcPipe, wcTap );
-
-    // write a DOT file and run the flow
-    Flow wcFlow = flowConnector.connect( flowDef );
-    wcFlow.writeDOT( "dot/wc.dot" );
-    wcFlow.complete();
+    .addSource( copyPipe, inTap )
+    .addTailSink( copyPipe, outTap );
+    // run the flow
+    flowConnector.connect( flowDef ).complete();
     }
   }
