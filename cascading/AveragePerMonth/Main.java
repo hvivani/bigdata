@@ -33,8 +33,8 @@ public class
     FlowConnector flowConnector = new HadoopFlowConnector( properties );
 
     // create source and sink taps
-    Tap inTap = new Hfs( new TextDelimited( true, "|" ), inPath );
-    Tap outTap = new Hfs( new TextDelimited( true, "|" ), outPath );
+    Tap inTap = new Hfs( new TextDelimited( false, "|" ), inPath );
+    Tap outTap = new Hfs( new TextDelimited( false, "|" ), outPath );
 
     
     // specify a pipe to connect the taps
