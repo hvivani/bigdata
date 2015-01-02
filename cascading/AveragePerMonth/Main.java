@@ -36,6 +36,8 @@ public class
     Tap inTap = new Hfs( new TextDelimited( false, "|" ), inPath );
     Tap outTap = new Hfs( new TextDelimited( false, "|" ), outPath );
 
+    //define the fields:
+    Fields recordFields = new Fields( "LoadId", "MRP", "ServicerName", "CIR", "UPB", "LoanAge", "RMLM" , "ARMM", "MadurityDate", "MSA", "CLDS", "ModificationFlag", "ZBC", "ZBED", "RepurchaseIndicator");
     
     // specify a pipe to connect the taps
     Pipe copyPipe = new Pipe( "copy" );
