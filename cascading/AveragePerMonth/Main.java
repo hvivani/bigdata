@@ -12,6 +12,7 @@ import cascading.operation.aggregator.Count;
 import cascading.operation.aggregator.Average;
 import cascading.operation.regex.RegexSplitGenerator;
 import cascading.operation.regex.RegexGenerator;
+import cascading.operation.regex.RegexFilter;
 import cascading.operation.text.DateParser;
 import cascading.operation.text.DateFormatter;
 import cascading.tap.SinkMode;
@@ -26,6 +27,7 @@ import cascading.scheme.hadoop.TextDelimited;
 import cascading.tap.Tap;
 import cascading.tap.hadoop.Hfs;
 import cascading.tuple.Fields;
+
 
 
 public class
@@ -66,9 +68,13 @@ public class
     RegexGenerator splitter=new RegexGenerator(new Fields("month"),"(?<!\\pL)(?=\\pL)[^ ]*(?<=\\pL)(?!\\pL])");
     parsePipe = new Each( parsePipe, new Fields( "date" ), splitter, Fields.ALL );
 
+    //filterning tuples with null at UPB field
+    RegexFilter nullfilter = new RegexFilter( "^$" ,true);
+    parsePipe = new Each( parsePipe, new Fields( "UPB" ), nullfilter );
+
     //Pipe to filter duplicates. It is like select distinct. It is like using combiners.
     //http://docs.cascading.org/cascading/2.2/javadoc/cascading/pipe/assembly/Unique.html
-    Pipe uniquePipe = new Unique("unique", parsePipe, new Fields("LoadId","MRP"));
+    parsePipe = new Unique(parsePipe, new Fields("LoadId", "MRP", "ServicerName", "CIR", "UPB", "LoanAge", "RMLM" , "ARMM", "MadurityDate", "MSA", "CLDS", "ModificationFlag", "ZBC", "ZBED", "RepurchaseIndicator"));
 
     // aggregate by year, month. input is previous parsePipe
     Pipe averagePipe = new GroupBy( "averagePipe", uniquePipe, new Fields(/*"year",*/ "month" ));
