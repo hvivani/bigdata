@@ -15,6 +15,7 @@ import cascading.operation.regex.RegexGenerator;
 import cascading.operation.regex.RegexFilter;
 import cascading.operation.text.DateParser;
 import cascading.operation.text.DateFormatter;
+import cascading.operation.text.FieldFormatter;
 import cascading.tap.SinkMode;
 import cascading.pipe.Each;
 import cascading.pipe.Every;
@@ -27,7 +28,6 @@ import cascading.scheme.hadoop.TextDelimited;
 import cascading.tap.Tap;
 import cascading.tap.hadoop.Hfs;
 import cascading.tuple.Fields;
-
 
 
 public class
@@ -45,7 +45,7 @@ public class
 
     //scheme definition:
     Scheme inScheme = new TextDelimited( new Fields("LoadId", "MRP", "ServicerName", "CIR", "UPB", "LoanAge", "RMLM" , "ARMM", "MadurityDate", "MSA", "CLDS", "ModificationFlag", "ZBC", "ZBED", "RepurchaseIndicator"), "|");
-    Scheme outScheme = new TextDelimited( new Fields( /*"year",*/ "month", "UPBaverage"),"\t" ) ;
+    Scheme outScheme = new TextDelimited( new Fields( /*"year",*/ "month", "UPBaverageFormatted"),"\t" ) ;
 
     // create source and sink taps
     Tap inTap = new Hfs( inScheme, inPath );
@@ -58,12 +58,12 @@ public class
     //Parsing the date. (0 is January)
     //DateParser dateParser= new DateParser(new Fields("month", "day", "year"), new int[] { Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.YEAR }, "MM/dd/yyyy");
     //parse pipe will parse the MRP field into month, day, year. /with Fields.ALL I get original fields + new fields. With Fields.RESULTS, I get only the date parsed.
-    Pipe parsePipe = new Each("parsePipe", new Fields("MRP"), dateParser , Fields.ALL);
+    Pipe parsePipe = new Each("parsePipe", new Fields("MRP"), dateParser , Fields.ALL); 
 
     //change the format from "ts" to date required
     DateFormatter formatter = new DateFormatter( new Fields( "date" ), "dd/MMMM/yyyy" );
     parsePipe = new Each( parsePipe, new Fields( "ts" ), formatter, Fields.ALL );
-
+ 
     //regex to extract the month in MMMM format:
     RegexGenerator splitter=new RegexGenerator(new Fields("month"),"(?<!\\pL)(?=\\pL)[^ ]*(?<=\\pL)(?!\\pL])");
     parsePipe = new Each( parsePipe, new Fields( "date" ), splitter, Fields.ALL );
@@ -77,17 +77,22 @@ public class
     parsePipe = new Unique(parsePipe, new Fields("LoadId", "MRP", "ServicerName", "CIR", "UPB", "LoanAge", "RMLM" , "ARMM", "MadurityDate", "MSA", "CLDS", "ModificationFlag", "ZBC", "ZBED", "RepurchaseIndicator"));
 
     // aggregate by year, month. input is previous parsePipe
-    Pipe averagePipe = new GroupBy( "averagePipe", uniquePipe, new Fields(/*"year",*/ "month" ));
+    Pipe averagePipe = new GroupBy( "averagePipe", parsePipe, new Fields(/*"year",*/ "month" )); //,true for descending order
     // average each aggregation
     averagePipe = new Every(averagePipe, new Fields("UPB"), new Average(new Fields("UPBaverage")), Fields.ALL );
 
+    //field formatter: $ xxxxxxx.xx
+    FieldFormatter fieldformatter = new FieldFormatter ( new Fields("UPBaverageFormatted")," $ %.2f");
+    averagePipe = new Each( averagePipe, new Fields( "UPBaverage" ), fieldformatter, Fields.ALL );
 
+ 
     // connect the taps, pipes, etc., into a flow
     FlowDef flowDef = FlowDef.flowDef()
     .addSource( averagePipe, inTap )
     //.addSource( parsePipe, inTap )
-    .addTailSink(averagePipe, outTap );
+    .addTailSink(averagePipe, outTap )
     //.addTailSink(parsePipe, outTap );
+    .setName("vivanih's-job-is-running");
     // run the flow
     flowConnector.connect( flowDef ).complete();
     }
