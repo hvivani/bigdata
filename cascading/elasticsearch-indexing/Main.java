@@ -2,6 +2,8 @@ package com.amazonaws.vivanih.hadoop.cascading;
 
 import java.util.Properties;
 
+import org.elasticsearch.hadoop.cascading.EsTap;
+
 import cascading.flow.Flow;
 import cascading.flow.FlowConnector;
 import cascading.flow.FlowDef;
@@ -23,11 +25,12 @@ import cascading.pipe.assembly.Unique;
 import cascading.property.AppProps;
 import cascading.scheme.Scheme;
 import cascading.scheme.hadoop.TextDelimited;
+import cascading.scheme.hadoop.TextLine;
 import cascading.tap.Tap;
 import cascading.tap.hadoop.Hfs;
 import cascading.tap.hadoop.Lfs;
 import cascading.tuple.Fields;
-import org.elasticsearch.hadoop.cascading.EsTap;
+
 
 
 public class
@@ -37,24 +40,32 @@ public class
   main( String[] args )
     {
     String inPath = args[ 0 ];
-    String outPath = args[ 1 ];
+    //String outPath = args[ 1 ];
 
     Properties properties = new Properties();
     AppProps.setApplicationJarClass( properties, Main.class );
+    //we tell cascading we are using JSON files as input:
+    properties.setProperty("es.input.json", "true");
+    //disable speculative execution
+    properties.setProperty("mapreduce.map.speculative", "false");
+    properties.setProperty("mapreduce.reduce.speculative", "false");
+    properties.setProperty("es.port", "9202");
+
    // AppProps.setApplicationJarPath(properties, "/home/hadoop/impatient.jar");
     //FlowConnector flowConnector = new Hadoop2MR1FlowConnector( properties );
     //test elasticsearch set property
     //props.setProperty("es.index.auto.create", "false");
 
     FlowConnector flowConnector = new HadoopFlowConnector( properties );
+    //FlowConnector flowConnector = new Hadoop2MR1FlowConnector( properties );
 
-    // create the source tap
-    //Tap inTap = new Hfs( new TextDelimited( true, "\t" ), inPath );
-    Tap inTap = new Lfs(new TextDelimited(new Fields("id", "name", "url", "picture")), "/mnt/data/");
+    // create the source tap for JSON input
+    Tap inTap = new Hfs( new TextLine(new Fields("line")), inPath );
+    //Tap inTap = new Lfs(new TextDelimited(new Fields("id", "name", "url", "picture")), inPath);
 
     // create the sink tap
     //Tap outTap = new Hfs( new TextDelimited( true, "\t" ), outPath );
-    Tap outTap = new EsTap("radio/artists" , new Fields("name", "url", "picture") );
+    Tap outTap = new EsTap("radio/artists");
 
     // specify a pipe to connect the taps
     Pipe copyPipe = new Pipe( "write-to-Es" );
@@ -68,3 +79,4 @@ public class
     flowConnector.connect( flowDef ).complete();
     }
   }
+      
