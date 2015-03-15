@@ -40,7 +40,8 @@ public class
   main( String[] args )
     {
     String inPath = args[ 0 ];
-    //String outPath = args[ 1 ];
+    String outPath = args[ 1 ];
+    //String trapPath = args[ 1 ];
 
     Properties properties = new Properties();
     AppProps.setApplicationJarClass( properties, Main.class );
@@ -61,19 +62,25 @@ public class
 
     // create the source tap for JSON input
     Tap inTap = new Hfs( new TextLine(new Fields("line")), inPath );
+    //Tap trapTap = new Hfs( new TextLine(new Fields("line")), trapPath );
     //Tap inTap = new Lfs(new TextDelimited(new Fields("id", "name", "url", "picture")), inPath);
 
     // create the sink tap
-    //Tap outTap = new Hfs( new TextDelimited( true, "\t" ), outPath );
+    //Tap outTap = new Hfs( new TextLine(new Fields("line")), outPath );
     Tap outTap = new EsTap("radio/artists");
 
+    Pipe parsePipe = new Pipe( "parsePipe" );
+    RegexGenerator splitter=new RegexGenerator(new Fields("json"),"^\\{\"Envelope\".*$");
+    parsePipe = new Each( parsePipe, new Fields( "line" ), splitter, Fields.RESULTS );
+
     // specify a pipe to connect the taps
-    Pipe copyPipe = new Pipe( "write-to-Es" );
+    //Pipe copyPipe = new Pipe( "write-to-Es" );
 
     // connect the taps, pipes, etc., into a flow
     FlowDef flowDef = FlowDef.flowDef()
-     .addSource( copyPipe, inTap )
-     .addTailSink( copyPipe, outTap );
+     .addSource( parsePipe, inTap )
+     //.addTrap( copyPipe, trapTap )
+     .addTailSink( parsePipe, outTap );
 
     // run the flow
     flowConnector.connect( flowDef ).complete();
