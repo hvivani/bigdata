@@ -40,12 +40,13 @@ public class
   main( String[] args )
     {
     String inPath = args[ 0 ];
-    String outPath = args[ 1 ];
+    //String outPath = args[ 1 ];
     //String trapPath = args[ 1 ];
 
     Properties properties = new Properties();
     AppProps.setApplicationJarClass( properties, Main.class );
     //we tell cascading we are using JSON files as input:
+    //As this is just used when calling EsTap library, we can apply some filters before output is indexed on Elasticsearch
     properties.setProperty("es.input.json", "true");
     //disable speculative execution
     properties.setProperty("mapreduce.map.speculative", "false");
@@ -66,9 +67,11 @@ public class
     //Tap inTap = new Lfs(new TextDelimited(new Fields("id", "name", "url", "picture")), inPath);
 
     // create the sink tap
+    // Output is sent directly to Elasticsearch
     //Tap outTap = new Hfs( new TextLine(new Fields("line")), outPath );
-    Tap outTap = new EsTap("radio/artists");
+    Tap outTap = new EsTap("common-crawl/wat");
 
+    //The input files are parsed to remove WARC Headers and process a clean JSON file as input
     Pipe parsePipe = new Pipe( "parsePipe" );
     RegexGenerator splitter=new RegexGenerator(new Fields("json"),"^\\{\"Envelope\".*$");
     parsePipe = new Each( parsePipe, new Fields( "line" ), splitter, Fields.RESULTS );
