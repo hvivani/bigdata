@@ -1,0 +1,1234 @@
+{
+    "common-crawl": {
+        "mappings": {
+            "wat": {
+                "properties": {
+                    "Container": {
+                        "properties": {
+                            "Compressed": {
+                                "type": "boolean"
+                            },
+                            "Filename": {
+                                "type": "string"
+                            },
+                            "Gzip-Metadata": {
+                                "properties": {
+                                    "Deflate-Length": {
+                                        "type": "string"
+                                    },
+                                    "Footer-Length": {
+                                        "type": "string"
+                                    },
+                                    "Header-Length": {
+                                        "type": "string"
+                                    },
+                                    "Inflated-CRC": {
+                                        "type": "string"
+                                    },
+                                    "Inflated-Length": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "Offset": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Envelope": {
+                        "properties": {
+                            "Actual-Content-Length": {
+                                "type": "string"
+                            },
+                            "Block-Digest": {
+                                "type": "string"
+                            },
+                            "Format": {
+                                "type": "string"
+                            },
+                            "Payload-Metadata": {
+                                "properties": {
+                                    "Actual-Content-Length": {
+                                        "type": "string"
+                                    },
+                                    "Actual-Content-Type": {
+                                        "type": "string"
+                                    },
+                                    "HTTP-Request-Metadata": {
+                                        "properties": {
+                                            "Entity-Digest": {
+                                                "type": "string"
+                                            },
+                                            "Entity-Length": {
+                                                "type": "string"
+                                            },
+                                            "Entity-Trailing-Slop-Bytes": {
+                                                "type": "string"
+                                            },
+                                            "Headers": {
+                                                "properties": {
+                                                    "Accept": {
+                                                        "type": "string"
+                                                    },
+                                                    "Accept-Encoding": {
+                                                        "type": "string"
+                                                    },
+                                                    "Accept-Language": {
+                                                        "type": "string"
+                                                    },
+                                                    "Host": {
+                                                        "type": "string"
+                                                    },
+                                                    "User-Agent": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "Headers-Length": {
+                                                "type": "string"
+                                            },
+                                            "Request-Message": {
+                                                "properties": {
+                                                    "Method": {
+                                                        "type": "string"
+                                                    },
+                                                    "Path": {
+                                                        "type": "string"
+                                                    },
+                                                    "Version": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "HTTP-Response-Metadata": {
+                                        "properties": {
+                                            "Entity-Digest": {
+                                                "type": "string"
+                                            },
+                                            "Entity-Length": {
+                                                "type": "string"
+                                            },
+                                            "Entity-Trailing-Slop-Bytes": {
+                                                "type": "string"
+                                            },
+                                            "HTML-Metadata": {
+                                                "properties": {
+                                                    "Head": {
+                                                        "properties": {
+                                                            "Base": {
+                                                                "type": "string"
+                                                            },
+                                                            "Link": {
+                                                                "properties": {
+                                                                    "path": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "rel": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "url": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "Metas": {
+                                                                "properties": {
+                                                                    "content": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "http-equiv": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "Scripts": {
+                                                                "properties": {
+                                                                    "path": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "url": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "Title": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    },
+                                                    "Links": {
+                                                        "properties": {
+                                                            "alt": {
+                                                                "type": "string"
+                                                            },
+                                                            "href": {
+                                                                "type": "string"
+                                                            },
+                                                            "method": {
+                                                                "type": "string"
+                                                            },
+                                                            "path": {
+                                                                "type": "string"
+                                                            },
+                                                            "target": {
+                                                                "type": "string"
+                                                            },
+                                                            "text": {
+                                                                "type": "string"
+                                                            },
+                                                            "title": {
+                                                                "type": "string"
+                                                            },
+                                                            "url": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "Headers": {
+                                                "properties": {
+                                                    "Accept-Ranges": {
+                                                        "type": "string"
+                                                    },
+                                                    "Access-Control-Allow-Credentials": {
+                                                        "type": "string"
+                                                    },
+                                                    "Access-Control-Allow-Headers": {
+                                                        "type": "string"
+                                                    },
+                                                    "Access-Control-Allow-Methods": {
+                                                        "type": "string"
+                                                    },
+                                                    "Access-Control-Allow-Origin": {
+                                                        "type": "string"
+                                                    },
+                                                    "Access-Control-Expose-Headers": {
+                                                        "type": "string"
+                                                    },
+                                                    "Access-Control-Max-Age": {
+                                                        "type": "string"
+                                                    },
+                                                    "Age": {
+                                                        "type": "string"
+                                                    },
+                                                    "Alternate-Protocol": {
+                                                        "type": "string"
+                                                    },
+                                                    "AppServer": {
+                                                        "type": "string"
+                                                    },
+                                                    "AppTime": {
+                                                        "type": "string"
+                                                    },
+                                                    "Backend": {
+                                                        "type": "string"
+                                                    },
+                                                    "Bluegreen-Enabled": {
+                                                        "type": "string"
+                                                    },
+                                                    "Bluegreen-Percent": {
+                                                        "type": "string"
+                                                    },
+                                                    "CACHE-CONTROL": {
+                                                        "type": "string"
+                                                    },
+                                                    "CF-Cache-Status": {
+                                                        "type": "string"
+                                                    },
+                                                    "CF-RAY": {
+                                                        "type": "string"
+                                                    },
+                                                    "Cache": {
+                                                        "type": "string"
+                                                    },
+                                                    "Cache-Control": {
+                                                        "type": "string"
+                                                    },
+                                                    "Cache-control": {
+                                                        "type": "string"
+                                                    },
+                                                    "CacheControl": {
+                                                        "type": "string"
+                                                    },
+                                                    "Cf-Railgun": {
+                                                        "type": "string"
+                                                    },
+                                                    "CommunityServer": {
+                                                        "type": "string"
+                                                    },
+                                                    "Composed-By": {
+                                                        "type": "string"
+                                                    },
+                                                    "Connection": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-Disposition": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-Encoding": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-Language": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-Length": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-Location": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-MD5": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-Transfer-Encoding": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-Type": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-disposition": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-encoding": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-language": {
+                                                        "type": "string"
+                                                    },
+                                                    "Content-length": {
+                                                        "type": "string"
+                                                    },
+                                                    "Cteonnt-Length": {
+                                                        "type": "string"
+                                                    },
+                                                    "Date": {
+                                                        "type": "string"
+                                                    },
+                                                    "DistantCousin.com": {
+                                                        "type": "string"
+                                                    },
+                                                    "ETag": {
+                                                        "type": "string"
+                                                    },
+                                                    "Etag": {
+                                                        "type": "string"
+                                                    },
+                                                    "Expect": {
+                                                        "type": "string"
+                                                    },
+                                                    "Expires": {
+                                                        "type": "string"
+                                                    },
+                                                    "From": {
+                                                        "type": "string"
+                                                    },
+                                                    "Honor-Origin-Cache-Headers": {
+                                                        "type": "string"
+                                                    },
+                                                    "Host": {
+                                                        "type": "string"
+                                                    },
+                                                    "Host-Header": {
+                                                        "type": "string"
+                                                    },
+                                                    "InvH": {
+                                                        "type": "string"
+                                                    },
+                                                    "Keep-Alive": {
+                                                        "type": "string"
+                                                    },
+                                                    "LEG": {
+                                                        "type": "string"
+                                                    },
+                                                    "Last-Modified": {
+                                                        "type": "string"
+                                                    },
+                                                    "Last-modified": {
+                                                        "type": "string"
+                                                    },
+                                                    "Link": {
+                                                        "type": "string"
+                                                    },
+                                                    "MBPE": {
+                                                        "type": "string"
+                                                    },
+                                                    "MS-Author-Via": {
+                                                        "type": "string"
+                                                    },
+                                                    "MachineName": {
+                                                        "type": "string"
+                                                    },
+                                                    "MicrosoftOfficeWebServer": {
+                                                        "type": "string"
+                                                    },
+                                                    "P3P": {
+                                                        "type": "string"
+                                                    },
+                                                    "P3p": {
+                                                        "type": "string"
+                                                    },
+                                                    "PageSpeed": {
+                                                        "type": "string"
+                                                    },
+                                                    "Pragma": {
+                                                        "type": "string"
+                                                    },
+                                                    "ProxyServer": {
+                                                        "type": "string"
+                                                    },
+                                                    "ProxyTime": {
+                                                        "type": "string"
+                                                    },
+                                                    "Prxy": {
+                                                        "type": "string"
+                                                    },
+                                                    "RTSS": {
+                                                        "type": "string"
+                                                    },
+                                                    "Real-Hostname": {
+                                                        "type": "string"
+                                                    },
+                                                    "Requested-Host": {
+                                                        "type": "string"
+                                                    },
+                                                    "Serv": {
+                                                        "type": "string"
+                                                    },
+                                                    "Server": {
+                                                        "type": "string"
+                                                    },
+                                                    "Server-N": {
+                                                        "type": "string"
+                                                    },
+                                                    "ServerID": {
+                                                        "type": "string"
+                                                    },
+                                                    "Set-Cookie": {
+                                                        "type": "string"
+                                                    },
+                                                    "Set-cookie": {
+                                                        "type": "string"
+                                                    },
+                                                    "Status": {
+                                                        "type": "string"
+                                                    },
+                                                    "Streamedfrom": {
+                                                        "type": "string"
+                                                    },
+                                                    "SvrName": {
+                                                        "type": "string"
+                                                    },
+                                                    "TCN": {
+                                                        "type": "string"
+                                                    },
+                                                    "Telligent-Evolution": {
+                                                        "type": "string"
+                                                    },
+                                                    "Vary": {
+                                                        "type": "string"
+                                                    },
+                                                    "Via": {
+                                                        "type": "string"
+                                                    },
+                                                    "WP-Super-Cache": {
+                                                        "type": "string"
+                                                    },
+                                                    "Web-Head": {
+                                                        "type": "string"
+                                                    },
+                                                    "WebServer": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-AH-Environment": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-API-Version": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-AWS-Id": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Actual-URL": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Adblock-Key": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Alternate-Cache-Key": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Amz-Cf-Id": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Analytics": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-ApacheServer": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-App-Server": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Ars-Server": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-AspNet-Version": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-AspNetMvc-Version": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Backend": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Backend-Response-Time": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Beta": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-CDN": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-CF-Powered-By": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Cache": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Cache-Group": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Cache-Hits": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Cache-Info": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Cache-Lookup": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Cache-Policy": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Cache-Remote": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Cache-Status": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Cacheable": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Cachetype": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Check-Cacheable": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Cocoon-Version": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Content-Digest": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Content-Options": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Content-Type-Options": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-D2id": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-DDC-Arch-Trace": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Device": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Drupal-Cache": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-FACTOR-TTL": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-FISHING": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-FORWARDED-FOR": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-FPFIS": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-FRAME-OPTIONS": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Firenze-Processing-Time": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Firenze-Processing-Times": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Forwarded-For": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Forwarded-Server": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Frame-Options": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Frames-Options": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Front": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Garden-Version": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Gateway": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Generator": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Geo": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Geo-IP": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Geo-IP-country": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Geo-IP-metro": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Geo-IP-region": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Geo-IPV": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Geo-Port": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-GeoIP": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Handled-By": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Hcom-Info": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Highwire-RequestId": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Highwire-SessionId": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Host": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Hosted-By": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Hostname": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Httpd-Host": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Iinfo": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Instart-Request-ID": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-JAL": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-JG-Page-Cache": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-JSL": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Kaltura": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Kaltura-Sendfile": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Kaltura-Session": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Kinja": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Kinja-Build": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Kinja-Server": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Libra-UpstreamHost": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Loop": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-MACHINE": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-MSW-Server": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Machine-ID": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Me": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Media": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Micro-Cache": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Mobilized-By": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Mod-Pagespeed": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-MsdnTechnet-Version": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-N": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-NIDS-ServerID": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-NginX-Cache": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-NginX-Server": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-NginX-Upstream": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Nginx-Host": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Nginx-Pool": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Nginx-UpstreamHost": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Nocache": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Node": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-ODL-Server": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Origin-Server": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Original-Request": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Outils-CS": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-PBY": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-PERF": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-PHP-Engine": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Page-Speed": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-PageType": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Pantheon-Endpoint": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Pantheon-Styx-Hostname": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Passed-To": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Passed-To-BeforeDispatch": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Passed-To-DLL": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Passed-To-PostProcessResponse": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Permitted-Cross-Domain-Policies": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-PersistenceNode": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-PhApp": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Pingback": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Ponies": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Port": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Powered-By": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Powered-By-Plesk": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Processing-begin": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Processing-finished": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Px": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Rack-Cache": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Region": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Request-ID": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Request-Id": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Returned-From": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Returned-From-BeforeDispatch": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Returned-From-DLL": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Returned-From-PostProcessResponse": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Robots-Tag": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Runtime": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Served-By": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Served-With": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Server": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Server-Id": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Set-Locale": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-ShardId": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-ShopId": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-SmartBan-Host": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-SmartBan-URL": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Sol": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Spip-Cache": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Styx-Build-Date": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Styx-Build-Num": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Styx-Build-Sha": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Styx-Req-Id": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Styx-Version": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-TN-ServedBy": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-TNCMS-Memory-Usage": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-TNCMS-Render-Time": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-TNCMS-Served-By": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-TNCMS-Version": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-TTL": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Telligent-Evolution": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Timer": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Trace": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Type": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-UA": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-UA-Compatible": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-UA-Profile": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-URL": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Ua-Compatible": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Upstream-Server": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Url": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-User-Agent": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-User-Auth": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-VCache": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-VG-WebCache": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-VWS-Id": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Varnish": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Varnish-Action": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Varnish-Age": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Varnish-Cache": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Varnish-Cookie-Debug": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Varnish-Hostname": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-W-DC": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-W3TC-Minify": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Webserver": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-XN-Trace-Token": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-XN-XNHTML": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-XQuery-Cached": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-XRDS-Location": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-XSS-Protection": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Xss-Protection": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-Yadis-Location": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-ac": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-hacker": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-hcom-ctx": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-hcom-xinfo": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-nananana": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-server": {
+                                                        "type": "string"
+                                                    },
+                                                    "X-w": {
+                                                        "type": "string"
+                                                    },
+                                                    "XDA-No-Cache": {
+                                                        "type": "string"
+                                                    },
+                                                    "XG-Bazel-ValidSlug": {
+                                                        "type": "string"
+                                                    },
+                                                    "age": {
+                                                        "type": "string"
+                                                    },
+                                                    "cache-control": {
+                                                        "type": "string"
+                                                    },
+                                                    "content-disposition": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "host_service": {
+                                                        "type": "string"
+                                                    },
+                                                    "keywords": {
+                                                        "type": "string"
+                                                    },
+                                                    "last-modified": {
+                                                        "type": "string"
+                                                    },
+                                                    "nnCoection": {
+                                                        "type": "string"
+                                                    },
+                                                    "ntCoent-Length": {
+                                                        "type": "string"
+                                                    },
+                                                    "p3p": {
+                                                        "type": "string"
+                                                    },
+                                                    "server": {
+                                                        "type": "string"
+                                                    },
+                                                    "x-amz-id-1": {
+                                                        "type": "string"
+                                                    },
+                                                    "x-amz-id-2": {
+                                                        "type": "string"
+                                                    },
+                                                    "x-backend": {
+                                                        "type": "string"
+                                                    },
+                                                    "x-cdn-fetch": {
+                                                        "type": "string"
+                                                    },
+                                                    "x-host": {
+                                                        "type": "string"
+                                                    },
+                                                    "x-url": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "Headers-Corrupt": {
+                                                "type": "boolean"
+                                            },
+                                            "Headers-Length": {
+                                                "type": "string"
+                                            },
+                                            "Response-Message": {
+                                                "properties": {
+                                                    "Reason": {
+                                                        "type": "string"
+                                                    },
+                                                    "Status": {
+                                                        "type": "string"
+                                                    },
+                                                    "Version": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "Headers-Corrupt": {
+                                        "type": "boolean"
+                                    },
+                                    "Trailing-Slop-Length": {
+                                        "type": "string"
+                                    },
+                                    "WARC-Info-Metadata": {
+                                        "properties": {
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "format": {
+                                                "type": "string"
+                                            },
+                                            "hostname": {
+                                                "type": "string"
+                                            },
+                                            "isPartOf": {
+                                                "type": "string"
+                                            },
+                                            "operator": {
+                                                "type": "string"
+                                            },
+                                            "publisher": {
+                                                "type": "string"
+                                            },
+                                            "robots": {
+                                                "type": "string"
+                                            },
+                                            "software": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "WARC-Metadata-Metadata": {
+                                        "properties": {
+                                            "Actual-Content-Length": {
+                                                "type": "string"
+                                            },
+                                            "Metadata-Records": {
+                                                "properties": {
+                                                    "Name": {
+                                                        "type": "string"
+                                                    },
+                                                    "Value": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "Trailing-Slop-Length": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "WARC-Header-Length": {
+                                "type": "string"
+                            },
+                            "WARC-Header-Metadata": {
+                                "properties": {
+                                    "Content-Length": {
+                                        "type": "string"
+                                    },
+                                    "Content-Type": {
+                                        "type": "string"
+                                    },
+                                    "WARC-Block-Digest": {
+                                        "type": "string"
+                                    },
+                                    "WARC-Concurrent-To": {
+                                        "type": "string"
+                                    },
+                                    "WARC-Date": {
+                                        "type": "date",
+                                        "format": "dateOptionalTime"
+                                    },
+                                    "WARC-Filename": {
+                                        "type": "string"
+                                    },
+                                    "WARC-IP-Address": {
+                                        "type": "string"
+                                    },
+                                    "WARC-Payload-Digest": {
+                                        "type": "string"
+                                    },
+                                    "WARC-Record-ID": {
+                                        "type": "string"
+                                    },
+                                    "WARC-Target-URI": {
+                                        "type": "string"
+                                    },
+                                    "WARC-Truncated": {
+                                        "type": "string"
+                                    },
+                                    "WARC-Type": {
+                                        "type": "string"
+                                    },
+                                    "WARC-Warcinfo-ID": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
