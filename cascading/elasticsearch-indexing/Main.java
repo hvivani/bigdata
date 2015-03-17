@@ -40,8 +40,6 @@ public class
   main( String[] args )
     {
     String inPath = args[ 0 ];
-    //String outPath = args[ 1 ];
-    //String trapPath = args[ 1 ];
 
     Properties properties = new Properties();
     AppProps.setApplicationJarClass( properties, Main.class );
@@ -53,18 +51,12 @@ public class
     properties.setProperty("mapreduce.reduce.speculative", "false");
     properties.setProperty("es.port", "9202");
 
-   // AppProps.setApplicationJarPath(properties, "/home/hadoop/impatient.jar");
-    //FlowConnector flowConnector = new Hadoop2MR1FlowConnector( properties );
-    //test elasticsearch set property
-    //props.setProperty("es.index.auto.create", "false");
+    //propperties.setProperty("es.index.auto.create", "false");
 
     FlowConnector flowConnector = new HadoopFlowConnector( properties );
-    //FlowConnector flowConnector = new Hadoop2MR1FlowConnector( properties );
 
     // create the source tap for JSON input
     Tap inTap = new Hfs( new TextLine(new Fields("line")), inPath );
-    //Tap trapTap = new Hfs( new TextLine(new Fields("line")), trapPath );
-    //Tap inTap = new Lfs(new TextDelimited(new Fields("id", "name", "url", "picture")), inPath);
 
     // create the sink tap
     // Output is sent directly to Elasticsearch
@@ -76,13 +68,9 @@ public class
     RegexGenerator splitter=new RegexGenerator(new Fields("json"),"^\\{\"Envelope\".*$");
     parsePipe = new Each( parsePipe, new Fields( "line" ), splitter, Fields.RESULTS );
 
-    // specify a pipe to connect the taps
-    //Pipe copyPipe = new Pipe( "write-to-Es" );
-
     // connect the taps, pipes, etc., into a flow
     FlowDef flowDef = FlowDef.flowDef()
      .addSource( parsePipe, inTap )
-     //.addTrap( copyPipe, trapTap )
      .addTailSink( parsePipe, outTap );
 
     // run the flow
