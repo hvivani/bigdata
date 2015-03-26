@@ -46,7 +46,7 @@ public class
     //we tell cascading we are using JSON files as input:
     //As this is just used when calling EsTap library, we can apply some filters before output is indexed on Elasticsearch
     properties.setProperty("es.input.json", "true");
-    //disable speculative execution
+    //disable speculative execution:  will schedule redundant copies of the remaining tasks across several nodes which do not have other work to perform.
     properties.setProperty("mapreduce.map.speculative", "false");
     properties.setProperty("mapreduce.reduce.speculative", "false");
     //elasticsearch bootstrapaction uses port 9202 on the slave nodes. As 9200 is used for HDFS internode communication.
