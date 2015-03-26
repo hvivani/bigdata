@@ -49,8 +49,10 @@ public class
     //disable speculative execution
     properties.setProperty("mapreduce.map.speculative", "false");
     properties.setProperty("mapreduce.reduce.speculative", "false");
+    //elasticsearch bootstrapaction uses port 9202 on the slave nodes. As 9200 is used for HDFS internode communication.
     properties.setProperty("es.port", "9202");
 
+    //by default index will be auto created
     //propperties.setProperty("es.index.auto.create", "false");
 
     FlowConnector flowConnector = new HadoopFlowConnector( properties );
@@ -60,12 +62,14 @@ public class
 
     // create the sink tap
     // Output is sent directly to Elasticsearch
-    //Tap outTap = new Hfs( new TextLine(new Fields("line")), outPath );
     Tap outTap = new EsTap("common-crawl/wat");
+    //if we want to write to HDFS instead of elasticsearch:
+    //Tap outTap = new Hfs( new TextLine(new Fields("line")), outPath );
 
-    //The input files are parsed to remove WARC Headers and process a clean JSON file as input
+    //The input files are parsed using Regex to remove WARC Headers and process a clean JSON file as input
     Pipe parsePipe = new Pipe( "parsePipe" );
     RegexGenerator splitter=new RegexGenerator(new Fields("json"),"^\\{\"Envelope\".*$");
+    //Each  operator will filter each entry in the Tuple stream depending on the Regex definition:
     parsePipe = new Each( parsePipe, new Fields( "line" ), splitter, Fields.RESULTS );
 
     // connect the taps, pipes, etc., into a flow
