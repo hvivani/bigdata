@@ -102,5 +102,11 @@
             <artifactId>elasticsearch-hadoop-cascading</artifactId>
             <version>2.0.1</version>
         </dependency>
+        <dependency>
+	   <groupId>org.codehaus.jackson</groupId>
+	   <artifactId>jackson-mapper-asl</artifactId>
+	   <version>1.5.0</version>
+        </dependency>
+
     </dependencies>
 </project>
