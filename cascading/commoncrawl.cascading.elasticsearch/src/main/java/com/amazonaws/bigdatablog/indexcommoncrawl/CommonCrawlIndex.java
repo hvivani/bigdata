@@ -8,6 +8,7 @@ import cascading.pipe.Pipe;
 import cascading.scheme.hadoop.TextLine;
 import cascading.tap.Tap;
 import cascading.tap.local.FileTap;
+import cascading.tap.hadoop.Hfs;
 import cascading.tuple.Fields;
 import org.elasticsearch.hadoop.cascading.EsTap;
 import java.util.Properties;
