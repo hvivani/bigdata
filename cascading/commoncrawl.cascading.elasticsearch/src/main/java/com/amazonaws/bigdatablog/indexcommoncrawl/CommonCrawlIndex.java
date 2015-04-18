@@ -17,8 +17,17 @@ public class CommonCrawlIndex {
 
     public static FlowDef buildFlowDef(Properties properties){
         // create the Cascading "source" (input) tap to read the commonCrawl WAT file(s)
+        System.out.println("platform: " + properties.getProperty("platform"));
+        Tap<?, ?, ?>  source=null;
+        if (properties.getProperty("platform").toString().compareTo("DISTRIBUTED")==0){
+                source = new Hfs(new cascading.scheme.hadoop.TextLine(new Fields("line")),properties.getProperty("inPath"));
+        }else if (properties.getProperty("platform").toString().compareTo("LOCAL")==0){
+                source = new FileTap(new cascading.scheme.local.TextLine(new Fields("line")) ,properties.getProperty("inPath"));
+        }else {
+                throw new RuntimeException("Unknown platform: " + properties.getProperty("PLATFORM"));
+        }
         //Tap<?, ?, ?> source = new FileTap(new TextLine(new Fields("line")) ,properties.getProperty("inPath"));
-        Tap<?, ?, ?>  source = new Hfs(new TextLine(new Fields("line")),properties.getProperty("inPath"));
+        //Tap<?, ?, ?>  source = new Hfs(new TextLine(new Fields("line")),properties.getProperty("inPath"));
 
         // create the "sink" (output) tap that will export the data to Elasticsearch
         Tap sink = new EsTap(properties.getProperty("es.target.index"));
