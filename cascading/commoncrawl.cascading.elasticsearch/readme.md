@@ -1,7 +1,7 @@
 Install:
 ========
 
-1)sudo yum install git
+1) sudo yum install git
 
 2) git clone https://github.com/hvivani/bigdata.git
 
