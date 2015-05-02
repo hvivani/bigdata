@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>1.7</jdk.version>
-        <hadoop.version>1.0.4</hadoop.version>
+        <hadoop.version>2.4.0</hadoop.version>
         <avro.version>1.7.4</avro.version>
         <slf4j.version>1.7.4</slf4j.version>
     </properties>
@@ -55,9 +55,22 @@
             <scope>test</scope>
         </dependency>
         <!-- real dependencies -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-core</artifactId>
+            <version>${hadoop.version}</version>
+            <scope>provided</scope>
+        </dependency>-->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
             <version>${hadoop.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -102,5 +115,11 @@
             <artifactId>elasticsearch-hadoop-cascading</artifactId>
             <version>2.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+
     </dependencies>
 </project>

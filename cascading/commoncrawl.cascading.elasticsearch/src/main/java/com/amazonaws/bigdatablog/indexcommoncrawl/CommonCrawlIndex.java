@@ -4,9 +4,11 @@ import cascading.flow.FlowDef;
 import cascading.operation.regex.RegexGenerator;
 import cascading.pipe.Each;
 import cascading.pipe.Pipe;
-import cascading.scheme.local.TextLine;
+//import cascading.scheme.local.TextLine;
+import cascading.scheme.hadoop.TextLine;
 import cascading.tap.Tap;
 import cascading.tap.local.FileTap;
+import cascading.tap.hadoop.Hfs;
 import cascading.tuple.Fields;
 import org.elasticsearch.hadoop.cascading.EsTap;
 import java.util.Properties;
@@ -15,8 +17,18 @@ public class CommonCrawlIndex {
 
     public static FlowDef buildFlowDef(Properties properties){
         // create the Cascading "source" (input) tap to read the commonCrawl WAT file(s)
-        Tap<?, ?, ?> source = new FileTap(new TextLine(new Fields("line"))
-                ,properties.getProperty("inPath"));
+        Tap source=null;
+        //check if we're running locally or on HDFS
+        Boolean isDistributed =((properties.containsKey("platform")) &&
+                (properties.getProperty("platform") == "DISTRIBUTED"));
+
+        String inPath =  properties.getProperty("inPath");
+
+        if (isDistributed){
+                source = new Hfs(new cascading.scheme.hadoop.TextLine(new Fields("line")), inPath);
+        }else {
+            source = new FileTap(new cascading.scheme.local.TextLine(new Fields("line")), inPath);
+        }
 
         // create the "sink" (output) tap that will export the data to Elasticsearch
         Tap sink = new EsTap(properties.getProperty("es.target.index"));
@@ -25,7 +37,7 @@ public class CommonCrawlIndex {
         return CommonCrawlIndex.createCommonCrawlFlowDef(source, sink);
     }
 
-    private static FlowDef createCommonCrawlFlowDef(Tap<?, ?, ?> source, Tap<?, ?, ?> sink) {
+    public static FlowDef createCommonCrawlFlowDef(Tap source, Tap sink) {
         Pipe parsePipe = new Pipe( "exportCommonCrawlWATPipe" );
 
         //Add a Regular Expression to collect the envelope json field from each line in the file
@@ -37,6 +49,8 @@ public class CommonCrawlIndex {
                 .addSource( parsePipe, source )
                 .addTailSink( parsePipe, sink );
     }
+
+
 
 
 
