@@ -19,8 +19,8 @@ public class CommonCrawlIndex {
         // create the Cascading "source" (input) tap to read the commonCrawl WAT file(s)
         Tap source=null;
         //check if we're running locally or on HDFS
-        Boolean isDistributed =((properties.containsKey("platform")) &&
-                (properties.getProperty("platform") == "DISTRIBUTED"));
+        Boolean isDistributed =((properties.containsKey("platform")) &&  && properties.getProperty("platform").toString().compareTo("DISTRIBUTED")==0);
+                //(properties.getProperty("platform") == "DISTRIBUTED"));
 
         String inPath =  properties.getProperty("inPath");
 
