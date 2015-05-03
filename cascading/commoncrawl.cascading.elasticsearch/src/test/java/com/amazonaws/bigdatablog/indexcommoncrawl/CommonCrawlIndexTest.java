@@ -25,7 +25,7 @@ public class CommonCrawlIndexTest {
         Properties properties = new ConfigReader().renderProperties(CommonCrawlIndexTest.class);
         FlowDef flowDef = CommonCrawlIndex.buildFlowDef(properties);
 
-        if (properties.getProperty("platform") == "LOCAL"){
+        if (properties.getProperty("platform").toString().compareTo("LOCAL")==0){
         //Using cascading Local connector to exclude Hadoop and just test the logic
             new LocalFlowConnector(properties).connect(flowDef).complete();
         }
