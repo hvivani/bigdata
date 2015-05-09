@@ -24,22 +24,20 @@ THE SOFTWARE. */
 
 
 
-// Lab 2 - Tuples, Fields and Coercion
-// ===================================
+// Lab 15 - Cascading with Hadoop
+// ==============================
 //
-// This lab builds upon part 1 using a TSV log file to add mapping of tuples to fields and using coercion to convert a date field.
+// This lab modifies lab 13 to execute in Hadoop instead of local mode and also showcases using Checkpoint.
 
 // You will be using the following classes to complete the lab:
 
-// CoercibleType: http://docs.cascading.org/cascading/2.5/javadoc/cascading/tuple/type/CoercibleType.html
+// Checkpoint: http://docs.cascading.org/cascading/2.5/javadoc/cascading/pipe/Checkpoint.html
 
-// DateType: http://docs.cascading.org/cascading/2.5/javadoc/cascading/tuple/type/DateType.html
+// Hfs: http://docs.cascading.org/cascading/2.5/javadoc/cascading/tap/hadoop/Hfs.html
 
-// Fields: http://docs.cascading.org/cascading/2.5/javadoc/cascading/tuple/Fields.html
+// TextDelimited: http://docs.cascading.org/cascading/2.5/javadoc/cascading/scheme/hadoop/TextDelimited.html
 
-// FileTap: http://docs.cascading.org/cascading/2.5/javadoc/cascading/tap/local/FileTap.html
-
-// TextDelimited: http://docs.cascading.org/cascading/2.5/javadoc/cascading/scheme/local/TextDelimited.html
+// HadoopFlowConnector: http://docs.cascading.org/cascading/2.5/javadoc/cascading/flow/hadoop/HadoopFlowConnector.html
 
 
 // Task 1 - Examine provided code
@@ -48,19 +46,33 @@ THE SOFTWARE. */
 package devtraining;
 
 import cascading.flow.Flow;
-import cascading.flow.local.LocalFlowConnector;
-import cascading.pipe.Pipe;
+import cascading.flow.FlowDef;
+import cascading.flow.FlowProcess;
+import cascading.flow.hadoop.HadoopFlowConnector;
+import cascading.operation.BaseOperation;
+import cascading.operation.Function;
+import cascading.operation.FunctionCall;
+import cascading.operation.expression.ExpressionFilter;
+import cascading.operation.regex.RegexFilter;
+import cascading.operation.regex.RegexParser;
+import cascading.operation.text.DateParser;
+import cascading.pipe.*;
+import cascading.pipe.assembly.Discard;
+import cascading.pipe.assembly.Rename;
+import cascading.pipe.assembly.Retain;
+import cascading.pipe.assembly.Unique;
+import cascading.pipe.joiner.InnerJoin;
 import cascading.property.AppProps;
-import cascading.scheme.local.TextDelimited;
+import cascading.scheme.hadoop.TextDelimited;
+import cascading.scheme.hadoop.TextLine;
 import cascading.tap.SinkMode;
 import cascading.tap.Tap;
-import cascading.tap.local.FileTap;
+import cascading.tap.hadoop.Hfs;
 import cascading.tuple.Fields;
-import cascading.tuple.type.CoercibleType;
-import cascading.tuple.type.DateType;
+import cascading.tuple.Tuple;
+import cascading.tuple.TupleEntry;
 
 import java.util.Properties;
-import java.util.TimeZone;
 
 public class
         Main {
@@ -70,49 +82,146 @@ public class
         String inputPath = args[0];
         // Output file
         String outputPath = args[1];
-        
-        //Task 2 - Specify the input File
-        //-------------------------------
-        // The file is in TSV format:
 
-        // in24.inetnebr.com [01/Aug/1995:00:00:01 -0400] "GET /shuttle/missions/sts-68/news/sts-68-mcc-05.txt HTTP/1.0" 200 1839
+        // Creates a source tap using scheme and local input file
+        // Using default TextLine scheme
+        Tap inTap = new Hfs(new TextLine(), inputPath);
 
-        // Step 1 - Declare CoercibleType
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        // Use "[dd/MMM/yyyy:HH:mm:ss Z]" for data formatting with DateType class
-        CoercibleType coercible = new DateType("[dd/MMM/yyyy:HH:mm:ss Z]", TimeZone.getDefault());
+        // Creates a sink tap to write to the Hfs; by default, TextDelimited writes all fields out
+        // For TextDelimited use header = true and delimiter = "\t"
+        Tap outTap = new Hfs(new TextDelimited(true, "\t"), outputPath, SinkMode.REPLACE);
 
-        // Step 2 - Declare log file field names
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        // Declares the field names used to parse out of the log file as "ip", "time", "request", "response" and "size".
-        // Use coercion with the following types: String, coercible type as defined in step 1, String, long, long
-        Fields apacheFields = new Fields("ip", "time", "request", "response", "size").applyTypes(String.class, coercible, String.class, long.class, long.class);
-        // Task 3 - Create In and Out Taps
-        // -------------------------------
-        // Step 1 - Create an inTap
-        // ~~~~~~~~~~~~~~~~~~~~~~~~
-        // Create a source tap, "inTap", using TextDelimited scheme (TAB default) using fields declared above.
-        // Use the input path name specified in the code
-        Tap inTap = new FileTap(new TextDelimited(apacheFields), inputPath);
-        // Step 2 - Create an outTap
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~
-        // Create a sink tap, "outTap", to write to the default filesystem; by default; use SinkMode REPLACE
-        // Use the output path name specified in the code
-        Tap outTap = new FileTap(new TextDelimited(), outputPath, SinkMode.REPLACE);
+        // Declares the field names used to parse out of the log file
+        Fields apacheFields = new Fields("ip", "time", "request", "response", "size");
 
-        // Task 4 - Examine Code Provided
+        // Defines the regular expression used to parse the log file
+        String apacheRegex = "^([^ ]*) \\S+ \\S+ \\[([\\w:/]+\\s[+\\-]\\d{4})\\] \"(.+?)\" (\\d{3}) ([^ ]*).*$";
+
+        // Declares the groups from the above regex. Each group will be given a field name from 'apacheFields'
+        int[] allGroups = {1, 2, 3, 4, 5};
+
+        // Creates the parser
+        RegexParser parser = new RegexParser(apacheFields, apacheRegex, allGroups);
+
+        // Creates the main import pipe element, and with the input argument named "line"
+        // replace the incoming tuple with the parser results
+        Pipe regexImport = new Each("regexImport", new Fields("line"), parser, Fields.RESULTS);
+
+        // Applies a text parser to create a timestamp from date and replace date by this timestamp
+        DateParser dateParser = new DateParser(new Fields("time"), "dd/MMM/yyyy:HH:mm:ss Z");
+        Pipe transformPipe = new Each(regexImport, new Fields("time"), dateParser, Fields.REPLACE);
+
+        // We want look for ips who have logged in last week and have accessed "GET /images/",
+        // (in reality URL would represent particular products or content in shopping carts, etc.)
+        // and do a join with our preferred ip list (using their score) which we will generate in a new branch
+
+        // 1st branch: filter out ips who have logged in within a week and accessed GET /images/
+        // "GET /images/"
+        Pipe filteredPipe = new Pipe("filteredPipe", transformPipe);
+        filteredPipe = new Each(filteredPipe, new Fields("request"), new RegexFilter("GET /images/"));
+        filteredPipe = new Retain(filteredPipe, new Fields("ip"));
+        filteredPipe = new Unique(filteredPipe, new Fields("ip"));
+
+        // We now use a sub assembly for 2nd branch
+        UserAssembly userAssembly = new UserAssembly(transformPipe);
+        Pipe userPipe = userAssembly.getTails()[0];
+
+        // Task 2 - Create a Checkpoint
+        // ----------------------------
+        // Step 1 - Create a new Checkpoint (userPipeCheckpoint)
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // We want to see the data passing through this point
+        Checkpoint userPipeCheckpoint = new Checkpoint( "userPipeCheckpoint", userPipe );
+        // Task 3 - Examine provided code
         // ------------------------------
-        // Creates the copyPipe pipe element, with the name 'Copy'
-        Pipe copyPipe = new Pipe("Copy Part2");
+        // Join both branches on ip address
+        Pipe join = new HashJoin(filteredPipe, new Fields("ip"), userPipeCheckpoint, new Fields("userip"), new InnerJoin());
+        join = new Discard(join, new Fields("userip"));
 
-        // Create a local planner for executing the flow
+        // Group by "score"
+        join = new GroupBy(join, new Fields("score"), true);
+
+
+        // Task 4 - Create a flow
+        // ----------------------
+        // Step 1 - Set an unique RunID
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // Creates the flow definition by connecting the taps and pipes
+        FlowDef flowDef = FlowDef.flowDef()
+                .addSource(transformPipe, inTap)
+                .addTailSink(join, outTap)
+                .setRunID("12345")
+                .setName("User Flow - Hadoop");
+
+        // Task 5 - Examine provided code
+        // ------------------------------
+
+        // Creates a planner for executing the flow
         Properties properties = AppProps.appProps()
-                .setName("part2")
+                .setName("part15")
                 .buildProperties();
 
-        // Connect the assembly to the SOURCE and SINK taps
-        Flow parsedLogFlow = new LocalFlowConnector(properties).connect(inTap, outTap, copyPipe);
-        // Run the flow
+        // Create a Hadoop Flow Connector
+        Flow parsedLogFlow = new HadoopFlowConnector(properties).connect(flowDef);
+
+        // Runs the flow
         parsedLogFlow.complete();
+    }
+
+    public static class UserAssembly extends SubAssembly {
+
+        public UserAssembly(Pipe pipe) {
+            // Registers incoming pipe
+            setPrevious(pipe);
+
+            // 2nd branch: add a generated score
+            Pipe userPipe = new Pipe("userPipe", pipe);
+            // Narrows stream to just IPS, remove duplicates and rename for subsequent join
+            userPipe = new Retain(userPipe, new Fields("ip"));
+            userPipe = new Unique(userPipe, new Fields("ip"));
+            userPipe = new Rename(userPipe, new Fields("ip"), new Fields("userip"));
+            // Add a field score generated from userip using hash function
+            userPipe = new Each(userPipe, new Fields("userip"), new ScoreNumber(new Fields("score")), Fields.ALL);
+
+            // Finally we filter out ips with score lower than 60
+            ExpressionFilter filterScore = new ExpressionFilter("score < 60", Integer.TYPE);
+            userPipe = new Each(userPipe, new Fields("score"), filterScore);
+
+            // Registers tails
+            setTails(userPipe);
+        }
+
+        // Generates a score number between 1 & 100
+        public static class ScoreNumber extends BaseOperation implements Function {
+            public ScoreNumber() {
+                // expects 1 argument, fails otherwise
+                super(1, new Fields("score"));
+            }
+
+            public ScoreNumber(Fields fieldDeclaration) {
+                // expects 1 argument, fails otherwise
+                super(1, fieldDeclaration);
+            }
+
+            public void operate(FlowProcess flowProcess, FunctionCall functionCall) {
+                // gets the arguments TupleEntry
+                TupleEntry arguments = functionCall.getArguments();
+
+                // creates a Tuple to hold our result value
+                Tuple result = new Tuple();
+                String ip = arguments.getString(0);
+                int hash = 7;
+                for (int i=0; i < ip.length(); i++) {
+                    hash = hash*31+ip.indexOf(i);
+                }
+
+                int score = hash % 100;
+                // adds the score value to the result Tuple
+                result.add(score);
+
+                // returns the result Tuple
+                functionCall.getOutputCollector().add(result);
+            }
+        }
     }
 }
