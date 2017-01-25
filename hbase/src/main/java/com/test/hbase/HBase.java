@@ -16,6 +16,9 @@ import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.hbase.mapreduce.*;
+import org.apache.hadoop.hbase.io.*;
+import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 
 public class HBase {
@@ -45,25 +48,48 @@ public class HBase {
 	 }
       }
 
+   public static class MyHBaseMapper extends TableMapper<Text, Text> {
+
+	     public void map(ImmutableBytesWritable row, Result value, Context context) throws InterruptedException, IOException {
+		         // process data for the row from the Result instance.
+	     }
+   }
+
     public static void main(String[] args) throws Exception {
        Configuration conf = new Configuration();
-
        Job job = new Job(conf, "hbase");
-
        job.setJarByClass(HBase.class);
-       job.setOutputKeyClass(Text.class);
-       job.setOutputValueClass(IntWritable.class);
 
-       job.setMapperClass(Map.class);
-       job.setReducerClass(Reduce.class);
+       Scan scan = new Scan();
+       scan.setCaching(500);        // 1 is the default in Scan, which will be bad for MapReduce jobs
+       scan.setCacheBlocks(false);  // don't set to true for MR jobs
+       TableMapReduceUtil.initTableMapperJob(
+	  "test",        // input HBase table name
+          scan,             // Scan instance to control CF and attribute selection
+	  MyHBaseMapper.class,   // mapper
+          null,             // mapper output key
+	  null,             // mapper output value
+       job);
+       job.setOutputFormatClass(NullOutputFormat.class);   // because we aren't emitting anything from mapper
 
-       job.setInputFormatClass(TextInputFormat.class);
-       job.setOutputFormatClass(TextOutputFormat.class);
+       boolean b = job.waitForCompletion(true);
+       if (!b) {
+	  throw new IOException("error with job!");
+       }
 
-       FileInputFormat.addInputPath(job, new Path(args[0]));
-       FileOutputFormat.setOutputPath(job, new Path(args[1]));
+      // job.setOutputKeyClass(Text.class);
+      // job.setOutputValueClass(IntWritable.class);
 
-       job.waitForCompletion(true);
+      // job.setMapperClass(Map.class);
+      // job.setReducerClass(Reduce.class);
+
+      // job.setInputFormatClass(TextInputFormat.class);
+      // job.setOutputFormatClass(TextOutputFormat.class);
+
+      // FileInputFormat.addInputPath(job, new Path(args[0]));
+      // FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+       //job.waitForCompletion(true);
     }
 }
 

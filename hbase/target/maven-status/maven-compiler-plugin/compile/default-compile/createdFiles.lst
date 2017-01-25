@@ -1,3 +1,4 @@
+com/test/hbase/HBase$MyHBaseMapper.class
+com/test/hbase/HBase.class
 com/test/hbase/HBase$Map.class
 com/test/hbase/HBase$Reduce.class
-com/test/hbase/HBase.class
