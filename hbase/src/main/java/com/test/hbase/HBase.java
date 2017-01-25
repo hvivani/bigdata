@@ -19,53 +19,51 @@ import org.apache.hadoop.io.Text;
 
 
 public class HBase {
-
    public static class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
-         private final static IntWritable one = new IntWritable(1);
-	       private Text word = new Text();
+      private final static IntWritable one = new IntWritable(1);
+      private Text word = new Text();
 
-             public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-	              String line = value.toString();
-	               StringTokenizer tokenizer = new StringTokenizer(line);
-	                while (tokenizer.hasMoreTokens()) {
-			            word.set(tokenizer.nextToken());
-			                context.write(word, one);
-			         }
-		      }
-	        }
+      public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+         String line = value.toString();
+         StringTokenizer tokenizer = new StringTokenizer(line);
+         while (tokenizer.hasMoreTokens()) {
+            word.set(tokenizer.nextToken());
+            context.write(word, one);
+         }
+      }
+   }
 
-      public static class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
+   public static class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 
-            public void reduce(Text key, Iterable<IntWritable> values, Context context)
-	             throws IOException, InterruptedException {
-	              int sum = 0;
-	               for (IntWritable val : values) {
-		                   sum += val.get();
-				            }
-		                context.write(key, new IntWritable(sum));
-			      }
-		       }
+      public void reduce(Text key, Iterable<IntWritable> values, Context context)
+	 throws IOException, InterruptedException {
+            int sum = 0;
+	    for (IntWritable val : values) {
+	       sum += val.get();
+            }
+	    context.write(key, new IntWritable(sum));
+	 }
+      }
 
-         public static void main(String[] args) throws Exception {
-	       Configuration conf = new Configuration();
+    public static void main(String[] args) throws Exception {
+       Configuration conf = new Configuration();
 
-             Job job = new Job(conf, "hbase");
+       Job job = new Job(conf, "hbase");
 
-           job.setJarByClass(HBase.class);
-	         job.setOutputKeyClass(Text.class);
+       job.setJarByClass(HBase.class);
+       job.setOutputKeyClass(Text.class);
        job.setOutputValueClass(IntWritable.class);
 
-            job.setMapperClass(Map.class);
-          job.setReducerClass(Reduce.class);
+       job.setMapperClass(Map.class);
+       job.setReducerClass(Reduce.class);
 
-         job.setInputFormatClass(TextInputFormat.class);
+       job.setInputFormatClass(TextInputFormat.class);
        job.setOutputFormatClass(TextOutputFormat.class);
 
-            FileInputFormat.addInputPath(job, new Path(args[0]));
-          FileOutputFormat.setOutputPath(job, new Path(args[1]));
+       FileInputFormat.addInputPath(job, new Path(args[0]));
+       FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
-         job.waitForCompletion(true);
+       job.waitForCompletion(true);
     }
-
 }
 
