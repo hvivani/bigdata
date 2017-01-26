@@ -12,4 +12,8 @@ mvn clean install
 Run:
 hadoop jar target/hbase-0.0.1-SNAPSHOT.jar com.test.hbase.HBase
 
+References:
+http://hbase.apache.org/0.94/book/mapreduce.example.html
+http://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-hbase-s3.html
+https://hvivani.com.ar/2015/02/28/hbase-useful-commands/
 
