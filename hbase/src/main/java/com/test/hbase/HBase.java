@@ -43,6 +43,10 @@ public static class MyHBaseMapper extends TableMapper<ImmutableBytesWritable, Pu
 					    		   	  	  		 									   	    
     public static void main(String[] args) throws Exception {
        Configuration conf = new Configuration();
+       // HBase through MR on Yarn is trying to connect to localhost instead of quorum.
+       conf.set("hbase.zookeeper.quorum","172.31.3.246");
+       conf.set("hbase.zookeeper.property.clientPort","2181");
+
        Job job = new Job(conf, "hbase");
        job.setJarByClass(HBase.class);
 
