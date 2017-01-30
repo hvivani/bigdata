@@ -1,5 +1,4 @@
-This HBase Mapreduce example, copy records from one table to the other on an HBase cluster.
-Destination Table must exist.
+HBase Mapreduce examples
 
 Set cluster config:
 export HADOOP_CLASSPATH="/usr/lib/hbase/*:/usr/lib/hbase/lib/*"
@@ -9,6 +8,7 @@ mvn clean install
 
 Run:
 hadoop jar target/hbase-0.0.1-SNAPSHOT.jar com.test.hbase.HBase
+hadoop jar target/hbase-0.0.1-SNAPSHOT.jar com.test.hbase.HBaseHDFS /tmp/mr/mySummaryFile004/
 
 Tested on EMR 5.2.1m HBase 1.2.3
 

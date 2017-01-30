@@ -1,2 +1,5 @@
 com/test/hbase/HBase$MyHBaseMapper.class
 com/test/hbase/HBase.class
+com/test/hbase/HBaseHDFS$MyHBaseMapper.class
+com/test/hbase/HBaseHDFS$MyReducer.class
+com/test/hbase/HBaseHDFS.class
