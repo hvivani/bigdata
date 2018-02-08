@@ -9,6 +9,11 @@ import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.util.Bytes;
+
+//author: Hernan Vivani
+//on EMR compile/run with  
+//javac -cp "/usr/lib/hbase/lib/*:" -Xlint HBaseCRUD.java
+//java -cp "/usr/lib/hbase/lib/*:" HBaseCRUD
  
 public class HBaseCRUD {
  
@@ -17,15 +22,15 @@ public class HBaseCRUD {
          hconfig.set("hbase.zookeeper.quorum", "172.31.11.101");
          hconfig.set("hbase.zookeeper.property.clientPort", "2181");
  
-         //DeleteHBaseTable(hconfig);
-        CreateHBaseTable();
-        InsertRecords();
+        DeleteHBaseTable(hconfig);
+        CreateHBaseTable(hconfig);
+        InsertRecords(hconfig);
     }
 
-    public static void CreateHBaseTable() {
-         HBaseConfiguration hconfig = new HBaseConfiguration(new Configuration());
-         hconfig.set("hbase.zookeeper.quorum", "172.31.11.101");
-         hconfig.set("hbase.zookeeper.property.clientPort", "2181");
+    public static void CreateHBaseTable(HBaseConfiguration hconfig) {
+         //HBaseConfiguration hconfig = new HBaseConfiguration(new Configuration());
+         //hconfig.set("hbase.zookeeper.quorum", "172.31.11.101");
+         //hconfig.set("hbase.zookeeper.property.clientPort", "2181");
          HTableDescriptor htable = new HTableDescriptor("users"); 
          htable.addFamily( new HColumnDescriptor("name"));
          htable.addFamily( new HColumnDescriptor("contact_info"));
@@ -49,10 +54,10 @@ public class HBaseCRUD {
              // Instantiating HBaseAdmin class
              HBaseAdmin admin = new HBaseAdmin(conf);
 
-             // disabling table named emp
+             System.out.println("disabling table...");
              admin.disableTable("users");
 
-             // Deleting emp
+             System.out.println("Deleting table...");
              admin.deleteTable("users");
              System.out.println("Table deleted");
          } catch (Exception e){
@@ -60,10 +65,10 @@ public class HBaseCRUD {
          }
     }
  
-    public static void InsertRecords() {
-         Configuration config = HBaseConfiguration.create();
-         config.set("hbase.zookeeper.quorum", "172.31.11.101");
-         config.set("hbase.zookeeper.property.clientPort", "2181");
+    public static void InsertRecords(HBaseConfiguration config) {
+         //Configuration config = HBaseConfiguration.create();
+         //config.set("hbase.zookeeper.quorum", "172.31.11.101");
+         //config.set("hbase.zookeeper.property.clientPort", "2181");
  
          String tableName = "users";
  
